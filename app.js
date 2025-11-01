@@ -1,31 +1,22 @@
-import express from "express";
-import { PrismaClient } from "@prisma/client";
+import express from 'express';
+import cors from 'cors';
+import productRoutes from './routes/product.js';
+import cartRoutes from './routes/cart.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const PORT = 4000;
 app.use(express.json());
+app.use(cors());
 
-const prisma = new PrismaClient();
+// Routes
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
 
-// ✅ ตัวอย่าง route: ดึงสินค้าทั้งหมด
-app.get("/products", async (req, res) => {
-  const products = await prisma.products.findMany({
-    include: {
-      product_flavours: {
-        include: { product_variants: true },
-      },
-    },
-  });
-  res.json(products);
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'API Running' });
 });
 
-// ✅ ตัวอย่าง route: เพิ่มสินค้าใหม่
-app.post("/products", async (req, res) => {
-  const { title, description } = req.body;
-  const product = await prisma.products.create({
-    data: { title, description },
-  });
-  res.json(product);
-});
-
-app.listen(PORT, () => console.log("🚀 Server running at http://localhost:" + PORT));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
