@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model users {
+  user_id     Int      @id @default(autoincrement())
+  username    String   @unique
+  password    String
+  email       String   @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  cart_items  cart_items[]
+}
+
+model products {
+  product_id  Int               @id @default(autoincrement())
+  title       String
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  product_flavours product_flavours[]
+}
+
+model product_flavours {
+  product_flavour_id Int              @id @default(autoincrement())
+  flavour_name       String
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  product   products @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
+  product_id Int
+  product_variants product_variants[]
+}
+
+model product_variants {
+  product_variant_id Int      @id @default(autoincrement())
+  size               String
+  price              Decimal
+  stock              Int      @default(0)
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  product_flavour   product_flavours @relation(fields: [product_flavour_id], references: [product_flavour_id], onDelete: Cascade)
+  product_flavour_id Int
+  cart_items cart_items[]
+}
+
+model cart_items {
+  cart_id           Int      @id @default(autoincrement())
+  quantity          Int      @default(1)
+  added_at          DateTime @default(now())
+  user   users   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  user_id Int
+  product_variant product_variants @relation(fields: [product_variant_id], references: [product_variant_id], onDelete: Cascade)
+  product_variant_id Int
+  @@unique([user_id, product_variant_id])
+}
