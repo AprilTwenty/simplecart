@@ -1,5 +1,5 @@
 import express from 'express';
-import { prisma } from '../prisma/client.js';
+import prisma from "../prisma/client.js";
 import { authenticate } from '../utils/authMiddleware.js';
 
 const cartRoutes = express.Router();
