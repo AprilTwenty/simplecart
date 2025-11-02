@@ -2,10 +2,10 @@ import express from 'express';
 import { prisma } from '../utils/prismaClient.js';
 import { authenticate } from '../utils/authMiddleware.js';
 
-const router = express.Router();
+const cartRoutes = express.Router();
 
 // ✅ GET /api/cart (ต้องล็อกอิน)
-router.get('/', authenticate, async (req, res) => {
+cartRoutes.get('/', authenticate, async (req, res) => {
   try {
     const cart = await prisma.cart_items.findMany({
       where: { user_id: req.user.id },
@@ -27,7 +27,7 @@ router.get('/', authenticate, async (req, res) => {
 });
 
 // ✅ POST /api/cart (เพิ่มสินค้า)
-router.post('/', authenticate, async (req, res) => {
+cartRoutes.post('/', authenticate, async (req, res) => {
   try {
     const { product_variant_id, quantity } = req.body;
 
@@ -74,4 +74,4 @@ router.post('/', authenticate, async (req, res) => {
   }
 });
 
-export default router;
+export default cartRoutes;

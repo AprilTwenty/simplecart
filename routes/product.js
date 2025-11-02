@@ -1,10 +1,10 @@
 import express from 'express';
 import { prisma } from '../utils/prismaClient.js';
 
-const router = express.Router();
+const productRoutes = express.Router();
 
 // ✅ GET /api/products
-router.get('/', async (req, res) => {
+productRoutes.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
     const skip = (page - 1) * limit;
@@ -28,4 +28,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-export default router;
+export default productRoutes;
