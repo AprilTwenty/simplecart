@@ -75,7 +75,7 @@ cartRoutes.post('/', authenticate, async (req, res) => {
 });
 
 // ✅ ลบสินค้าในตะกร้าเฉพาะรายการ
-router.delete("/:id", verifyToken, async (req, res) => {
+cartRoutes.delete("/:id", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const cartId = parseInt(req.params.id, 10);
