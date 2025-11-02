@@ -5,7 +5,7 @@ export const postUserValidation = (req, res, next) => {
     if (!username || !email || !password) {
         return res.status(400).json({
             "success": false,
-            "message": "ข้อมูลที่ต้องการมีไม่ครบ"
+            "message": "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ"
         });
     }
     if (username.length < 3 || username.length > 20 || typeof username !== 'string') {
@@ -35,7 +35,7 @@ export const loginValidation = (req, res, next) => {
     if (!username || !password) {
         return res.status(400).json({
             "success": false,
-            "message": "ข้อมูลที่ต้องการมีไม่ครบ"
+            "message": "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ"
         });
     }
     next();
@@ -45,7 +45,7 @@ export const usernameValidation = (req, res, next) => {
     if (!username) {
         return res.status(400).json({
             "success": false,
-            "message": "ข้อมูลที่ต้องการมีไม่ครบ"
+            "message": "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ"
         });
     }
     if (username.length < 3 || username.length > 20 || typeof username !== 'string') {

@@ -74,4 +74,38 @@ cartRoutes.post('/', authenticate, async (req, res) => {
   }
 });
 
+// ✅ ลบสินค้าในตะกร้าเฉพาะรายการ
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cartId = parseInt(req.params.id, 10);
+
+    // ตรวจว่ามีอยู่ไหมและเป็นของ user นี้หรือเปล่า
+    const existing = await prisma.cart.findUnique({
+      where: { cart_id: cartId },
+    });
+
+    if (!existing || existing.user_id !== userId) {
+      return res.status(404).json({
+        success: false,
+        message: "ไม่พบรายการในตะกร้า หรือไม่มีสิทธิ์ลบ",
+      });
+    }
+
+    // ลบจริง
+    await prisma.cart.delete({
+      where: { cart_id: cartId },
+    });
+
+    res.json({ success: true, message: "ลบสินค้าสำเร็จ" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "เกิดข้อผิดพลาดขณะลบสินค้า",
+    });
+  }
+});
+
+
 export default cartRoutes;
