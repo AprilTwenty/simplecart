@@ -93,7 +93,7 @@ cartRoutes.delete("/:id", authenticate, async (req, res) => {
     }
 
     // ลบจริง
-    await prisma.cart.delete({
+    await prisma.cart_items.delete({
       where: { cart_id: cartId },
     });
 
