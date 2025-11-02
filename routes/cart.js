@@ -1,6 +1,7 @@
 import express from 'express';
 import prisma from "../prisma/client.js";
 import { authenticate } from '../utils/authMiddleware.js';
+import { verifyToken } from "../utils/verifyToken.js";
 
 const cartRoutes = express.Router();
 
@@ -75,7 +76,7 @@ cartRoutes.post('/', authenticate, async (req, res) => {
 });
 
 // ✅ ลบสินค้าในตะกร้าเฉพาะรายการ
-cartRoutes.delete("/:id", authenticate, async (req, res) => {
+cartRoutes.delete("/:id", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const cartId = parseInt(req.params.id, 10);
