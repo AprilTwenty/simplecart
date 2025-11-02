@@ -1,7 +1,6 @@
 import express from 'express';
 import prisma from "../prisma/client.js";
 import { authenticate } from '../utils/authMiddleware.js';
-import { verifyToken } from "../utils/verifyToken.js";
 
 const cartRoutes = express.Router();
 
