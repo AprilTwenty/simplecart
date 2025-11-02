@@ -76,13 +76,13 @@ cartRoutes.post('/', authenticate, async (req, res) => {
 });
 
 // ✅ ลบสินค้าในตะกร้าเฉพาะรายการ
-cartRoutes.delete("/:id", verifyToken, async (req, res) => {
+cartRoutes.delete("/:id", authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
     const cartId = parseInt(req.params.id, 10);
 
     // ตรวจว่ามีอยู่ไหมและเป็นของ user นี้หรือเปล่า
-    const existing = await prisma.cart.findUnique({
+    const existing = await prisma.cart_items.findUnique({
       where: { cart_id: cartId },
     });
 
