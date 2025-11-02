@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "start": "node app.js",
+    "build": "npx prisma generate --schema=prisma/schema.prisma",
+    "start": "node api/index.js",
     "migrate": "prisma migrate deploy",
     "generate": "prisma generate"
   },
